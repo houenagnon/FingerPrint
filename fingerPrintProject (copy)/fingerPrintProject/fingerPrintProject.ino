@@ -81,8 +81,8 @@ void setup()
     while (1) { delay(1); }
   }
 
-  WiFi.begin("CPE_R0516_6B7A", "41004418");
-  //WiFi.begin("WIRELESS-CCP", "OnlyForCCP2021");
+  //WiFi.begin("CPE_R0516_6B7A", "41004418");
+  WiFi.begin("WIRELESS-CCP", "OnlyForCCP2021");
   //WiFi.begin("Centre De Calcul Annexe", "OnlyForCalculUsers2021");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -142,9 +142,6 @@ int p;
 void loop(){
   
 if(take_value == "enroll"){
-  //j'enclenche l'enregistrement
-      //global_var = String(-1);
-      //Serial.println("Valeur changée");
       verifierEmpreinte();
     
     }else if(take_value == "go"){
@@ -168,6 +165,8 @@ if(take_value == "enroll"){
     
     }else if(take_value == "0"){
       Serial.println("Perfect Action");
+    }else if(take_value == "wait"){
+      Serial.println("Wait Action Finish");
     }else{
       Serial.println("Je suis la");
       int Id = take_value.toInt();
@@ -410,7 +409,7 @@ default:
 Serial.println("Erreur inconnue");
 return false;
 }
-global_var = String(id);
+global_var = String(-15);//
 Serial.println("Retirez le doigt");
 
 delay(2000);
@@ -421,6 +420,7 @@ p = finger.getImage();
 Serial.print("ID "); Serial.println(id);
 
 p = -1;
+global_var = String(id);
 Serial.println("Replacez le même doigt");
 while (p != FINGERPRINT_OK) {
 p = finger.getImage();
@@ -495,7 +495,7 @@ Serial.print("ID "); Serial.println(id);
 p = finger.storeModel(id);
 if (p == FINGERPRINT_OK) {
 Serial.println("Enregistré Avec Succes!");
-global_var = String(1111);
+global_var = String(255);
 Serial.println("Retire");
 delay(2000);
 p = 0;
