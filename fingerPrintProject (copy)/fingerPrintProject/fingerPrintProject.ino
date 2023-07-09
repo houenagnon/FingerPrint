@@ -361,19 +361,39 @@ void enregistrerEmpreinte() {
   }
 }
 
+void checkIfStop(){
+  if (take_value == "enroll") {
+        return;  // Arrêter la fonction si enregistrementActif est false
+        
+  }  
+}
 
 
 bool getFingerprintEnroll(int id) {
 
 int p = -1;
 Serial.print("En attente d'un doigt valide pour l'enregistrement en tant que n°"); Serial.println(id);
-while (p != FINGERPRINT_OK) {
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
+while (p != FINGERPRINT_OK) { 
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 p = finger.getImage();
 switch (p) {
 case FINGERPRINT_OK:
 Serial.println("Image capturée");
 break;
 case FINGERPRINT_NOFINGER:
+  if (take_value == "enroll") {
+          return false;  // Arrêter la fonction si enregistrementActif est false        
+    }  
+
 Serial.println(".");
 break;
 case FINGERPRINT_PACKETRECIEVEERR:
@@ -412,11 +432,26 @@ Serial.println("Erreur inconnue");
 return false;
 }
 global_var = String(-15);//
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 Serial.println("Retirez le doigt");
 Serial.println(global_var);
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 delay(2000);
 p = 0;
 while (p != FINGERPRINT_NOFINGER) {
+
+  if (take_value == "enroll") {
+          return false;  // Arrêter la fonction si enregistrementActif est false        
+    }  
+
 p = finger.getImage();
 }
 Serial.print("ID "); Serial.println(id);
@@ -424,14 +459,29 @@ Serial.print("ID "); Serial.println(id);
 p = -1;
 global_var = String(id);
 Serial.println(global_var);
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 Serial.println("Replacez le même doigt");
+
 while (p != FINGERPRINT_OK) {
+  
+if (take_value == "enroll") {
+          return false;  // Arrêter la fonction si enregistrementActif est false        
+    }  
+
 p = finger.getImage();
 switch (p) {
 case FINGERPRINT_OK:
 Serial.println("Image capturée");
 break;
 case FINGERPRINT_NOFINGER:
+
+if (take_value == "enroll") {
+          return false;  // Arrêter la fonction si enregistrementActif est false        
+    }  
 Serial.print(".");
 break;
 case FINGERPRINT_PACKETRECIEVEERR:
@@ -447,6 +497,9 @@ break;
 }
 
 // OK, succès !
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
 
 p = finger.image2Tz(2);
 switch (p) {
@@ -472,7 +525,9 @@ return false;
 
 // OK, convertie !
 Serial.print("Création du modèle pour le n°"); Serial.println(id);
-
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
 p = finger.createModel();
 if (p == FINGERPRINT_OK) {
 Serial.println("Correspondance des empreintes !");
@@ -483,10 +538,21 @@ return false;
 Serial.println("Les empreintes ne correspondent pas");
 global_var = String(151);
 Serial.println(global_var);
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 Serial.println("Retirez le doigt.Echec");
 delay(2000);
+
 p = 0;
 while (p != FINGERPRINT_NOFINGER) {
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 p = finger.getImage();
 }
 return false;
@@ -496,6 +562,11 @@ return false;
 }
 
 Serial.print("ID "); Serial.println(id);
+
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 p = finger.storeModel(id);
 if (p == FINGERPRINT_OK) {
 Serial.println("Enregistré Avec Succes!");
@@ -505,6 +576,10 @@ Serial.println("Retire");
 delay(2000);
 p = 0;
 while (p != FINGERPRINT_NOFINGER) {
+//********Vérifier l'arrêt ou non************
+          checkIfStop();
+//********************************************
+
 p = finger.getImage();
 }
 } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
