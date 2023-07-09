@@ -53,7 +53,7 @@ String global_var = "-1";
 
 //Variable pour recevoir des données de l'application
 String take_value = "-1";
-
+String stop;
 //int p = -1;
 
 
@@ -140,7 +140,7 @@ void setup()
 int p;
 
 void loop(){
-  
+
 if(take_value == "enroll"){
       verifierEmpreinte();
     
@@ -155,7 +155,7 @@ if(take_value == "enroll"){
     
         Serial.println("##############################");
 
-    } else if(take_value == "update"){
+    } else if(take_value == "remove"){
       Serial.println("Okkkkk");
       delay(5000);
       global_var = String(-1);
@@ -178,6 +178,7 @@ if(take_value == "enroll"){
       
       take_value = "0";
     }  
+
 
 //supprimerToutesEmpreintes();
     
@@ -325,7 +326,7 @@ int obtenirEmpreinteVerification()
           p = finger.getImage();
         }
     Serial.println("------------------------------------");
-    
+    global_var = String(254);
     return -1;
   }
 }
@@ -359,6 +360,7 @@ void enregistrerEmpreinte() {
     Serial.println("Échec de l'enregistrement de l'empreinte.");
   }
 }
+
 
 
 bool getFingerprintEnroll(int id) {
@@ -411,7 +413,7 @@ return false;
 }
 global_var = String(-15);//
 Serial.println("Retirez le doigt");
-
+Serial.println(global_var);
 delay(2000);
 p = 0;
 while (p != FINGERPRINT_NOFINGER) {
@@ -421,6 +423,7 @@ Serial.print("ID "); Serial.println(id);
 
 p = -1;
 global_var = String(id);
+Serial.println(global_var);
 Serial.println("Replacez le même doigt");
 while (p != FINGERPRINT_OK) {
 p = finger.getImage();
@@ -479,6 +482,7 @@ return false;
 } else if (p == FINGERPRINT_ENROLLMISMATCH) {
 Serial.println("Les empreintes ne correspondent pas");
 global_var = String(151);
+Serial.println(global_var);
 Serial.println("Retirez le doigt.Echec");
 delay(2000);
 p = 0;
@@ -496,6 +500,7 @@ p = finger.storeModel(id);
 if (p == FINGERPRINT_OK) {
 Serial.println("Enregistré Avec Succes!");
 global_var = String(255);
+Serial.println(global_var);
 Serial.println("Retire");
 delay(2000);
 p = 0;
