@@ -1,4 +1,4 @@
-#include <Arduino.h>
+ #include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
 #include <Wire.h>
@@ -81,8 +81,11 @@ void setup()
     while (1) { delay(1); }
   }
 
-  //WiFi.begin("CPE_R0516_6B7A", "41004418");
-  WiFi.begin("WIRELESS-CCP", "OnlyForCCP2021");
+  WiFi.begin("CPE_R0516_6B7A", "41004418");
+  //WiFi.begin("Public Wireless", "IT@imsp@_2022");
+  
+  //WiFi.begin("WIRELESS-CCP", "OnlyForCCP2021");
+  
   //WiFi.begin("Centre De Calcul Annexe", "OnlyForCalculUsers2021");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -156,19 +159,18 @@ if(take_value == "enroll"){
         Serial.println("##############################");
 
     } else if(take_value == "remove"){
-      Serial.println("Okkkkk");
-      delay(5000);
-      global_var = String(-1);
-      take_value == "-1";
-      
-     Serial.println("Goooofo");
-    
+        
+        Serial.println("Je suis la");
+        global_var = "-11";
+
+        if(take_value.toInt()>=1 && take_value.toInt()<= 127){
+       supprimerEmpreinte(take_value.toInt()); 
+       } 
     }else if(take_value == "0"){
       Serial.println("Perfect Action");
     }else if(take_value == "wait"){
       Serial.println("Wait Action Finish");
-    }else{
-      Serial.println("Je suis la");
+    }else{  
       int Id = take_value.toInt();
       if(Id>0 && Id<= 127){
        supprimerEmpreinte(Id); 
@@ -269,6 +271,9 @@ int obtenirEmpreinteVerification()
         break;
       case FINGERPRINT_NOFINGER:
         Serial.println("Aucun doigt détecté. Veuillez réessayer.");
+        if (take_value == "remove") {
+          return -1;  // Arrêter la fonction si enregistrementActif est false        
+        } 
         global_var = String(150); // L'application doit demander à l'utilisateur de placer son doigt
         delay(500);
         break;
